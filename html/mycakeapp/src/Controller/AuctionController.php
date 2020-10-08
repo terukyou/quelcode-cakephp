@@ -107,7 +107,7 @@ class AuctionController extends AuctionBaseController
 				$id = $biditem->id;
 
 				$imageName = $id . '.' . $fileType;
-				$imagePass = $dir . "\\" . $imageName;
+				$imagePass = $dir . "/" . $imageName;
 
 				$biditem['image_name'] = $imageName;
 				// 一時保存先からwebroot/img/auctionへ画像を移動
