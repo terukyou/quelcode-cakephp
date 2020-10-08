@@ -2,3 +2,6 @@ docker/mysql/data
 phpmyadmin
 .env
 .vscode
+auction/
+*
+!.gitkeep
