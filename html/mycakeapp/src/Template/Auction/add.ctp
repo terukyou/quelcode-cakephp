@@ -6,13 +6,17 @@
 		echo $this->Form->hidden('user_id', ['value' => $authuser['id']]);
 		echo '<p><strong>USER: ' . $authuser['username'] . '</strong></p>';
 		echo $this->Form->control('name');
-		echo $this->Form->control('description',['type'=>'textarea']);
+		echo $this->Form->control('description', ['type' => 'textarea']);
 		echo $this->Form->hidden('finished', ['value' => 0]);
 		echo $this->Form->control('endtime');
-		echo $this->Form->control('image_name',['type'=>'file']);
+		echo $this->Form->control('image_name', ['type' => 'file']);
 	?>
 	<p class="error-message">
-		<?php if($fileError ==='onemore'){echo 'ファイルを選択してください';}?>
+		<?php
+		if ($fileError === 'onemore') {
+			echo 'ファイルを選択してください';
+		}
+		?>
 	</p>
 	<?php echo $this->Form->error('fileType');?>
 </fieldset>

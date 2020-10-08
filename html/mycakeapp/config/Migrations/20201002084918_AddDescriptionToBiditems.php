@@ -33,14 +33,14 @@ class AddDescriptionToBiditems extends AbstractMigration
                     'after' => 'description',
                 ]
             )
-             ->update();
+            ->update();
     }
 
     public function down()
     {
         $this->table('biditems')
-             ->removeColumn('description')
-             ->removeColumn('image_name')
-             ->update();
+            ->removeColumn('description')
+            ->removeColumn('image_name')
+            ->update();
     }
 }
