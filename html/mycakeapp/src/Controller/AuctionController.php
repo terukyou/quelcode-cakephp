@@ -86,10 +86,34 @@ class AuctionController extends AuctionBaseController
 		$biditem = $this->Biditems->newEntity();
 		// POST送信時の処理
 		if ($this->request->is('post')) {
+			// 画像の拡張子
+			$fileType = pathinfo($this->request->data['image_name']['name'], PATHINFO_EXTENSION);
+			// 画像の一時保存先
+			$filePath = $this->request->data['image_name']['tmp_name'];
+
+			// 既存の画像名と拡張子をフォームに入れ直す
+			$this->request->data['image_name'] = $this->request->data['image_name']['name'];;
+			$this->request->data['fileType'] = $fileType;
+			
 			// $biditemにフォームの送信内容を反映
 			$biditem = $this->Biditems->patchEntity($biditem, $this->request->getData());
+
+			// webroot/img/auctionのパス
+			$dir = realpath(WWW_ROOT . '/img/auction/');
+
 			// $biditemを保存する
 			if ($this->Biditems->save($biditem)) {
+				// 商品idを取得
+				$id = $biditem->id;
+
+				$imageName = $id . '.' . $fileType;
+				$imagePass = $dir . "\\" . $imageName;
+
+				$biditem['image_name'] = $imageName;
+				// 一時保存先からwebroot/img/auctionへ画像を移動
+				move_uploaded_file($filePath, $imagePass);
+
+				$this->Biditems->save($biditem);
 				// 成功時のメッセージ
 				$this->Flash->success(__('保存しました。'));
 				// トップページ（index）に移動
@@ -100,6 +124,8 @@ class AuctionController extends AuctionBaseController
 		}
 		// 値を保管
 		$this->set(compact('biditem'));
+		$fileError='onemore';
+		$this->set('fileError',$fileError);
 	}
 
 	// 入札の処理

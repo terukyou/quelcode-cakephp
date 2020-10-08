@@ -1,12 +1,25 @@
 <h2>「<?= $biditem->name ?>」の情報</h2>
 <table class="vertical-table">
 <tr>
+	<th scope="row">出品画像</th>
+	<td>
+		<?php
+			$imageName = $biditem->image_name;
+			echo $this->Html->image('./auction/' . $imageName, ['alt' => $imageName]);
+		?>
+	</td>
+</tr>
+<tr>
 	<th class="small" scope="row">出品者</th>
 	<td><?= $biditem->has('user') ? $biditem->user->username : '' ?></td>
 </tr>
 <tr>
 	<th scope="row">商品名</th>
 	<td><?= h($biditem->name) ?></td>
+</tr>
+<tr>
+	<th scope="row">商品詳細</th>
+	<td><?= h($biditem->description) ?></td>
 </tr>
 <tr>
 	<th scope="row">商品ID</th>
