@@ -66,7 +66,6 @@ class BiditemsTable extends Table
         // CustomValidationを「custom」で使用可能に
         $validator->provider('custom', 'App\Model\Validation\CustomValidation');
 
-
         $validator
             ->integer('id')
             ->allowEmptyString('id', null, 'create');
