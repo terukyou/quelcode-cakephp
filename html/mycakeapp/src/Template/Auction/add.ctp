@@ -13,7 +13,7 @@
 	?>
 	<p class="error-message">
 		<?php
-		if ($fileError === 'onemore') {
+		if (isset($fileError)&&($fileError === 'onemore')) {
 			echo 'ファイルを選択してください';
 		}
 		?>
