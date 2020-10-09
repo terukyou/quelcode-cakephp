@@ -94,9 +94,9 @@ class BiditemsTable extends Table
             ->maxLength('image_name', 100)
             ->requirePresence('image_name', 'create')
             ->notEmptyString('image_name','ファイルを選択してください')
-            // 「custom」のisExtensionで拡張子チェック
+            // 「custom」のisImageExtensionで拡張子チェック
             ->add('fileType', 'ruleName', [
-                'rule' => ['isExtension'],
+                'rule' => ['isImageExtension'],
                 'provider' => 'custom',
                 'message'=>'拡張子がpng、jpg、jpeg、gifである画像を指定してください'
             ]);
