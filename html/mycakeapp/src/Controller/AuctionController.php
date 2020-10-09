@@ -121,11 +121,11 @@ class AuctionController extends AuctionBaseController
 			}
 			// 失敗時のメッセージ
 			$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
+			$fileError='onemore';
+			$this->set('fileError',$fileError);
 		}
 		// 値を保管
 		$this->set(compact('biditem'));
-		$fileError='onemore';
-		$this->set('fileError',$fileError);
 	}
 
 	// 入札の処理
