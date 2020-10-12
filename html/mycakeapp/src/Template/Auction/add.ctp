@@ -1,5 +1,5 @@
 <h2>商品を出品する</h2>
-<?= $this->Form->create($biditem,array('type'=>'file')) ?>
+<?= $this->Form->create($biditem, array('type' => 'file')) ?>
 <fieldset>
 	<legend>※商品名と終了日時を入力：</legend>
 	<?php
@@ -13,12 +13,12 @@
 	?>
 	<p class="error-message">
 		<?php
-		if (isset($fileError)&&($fileError === 'onemore')) {
+		if (isset($fileError) && ($fileError === 'onemore')) {
 			echo 'ファイルを選択してください';
 		}
 		?>
 	</p>
-	<?php echo $this->Form->error('fileType');?>
+	<?php echo $this->Form->error('fileType'); ?>
 </fieldset>
 <?= $this->Form->button(__('Submit')) ?>
 <?= $this->Form->end() ?>
