@@ -17,8 +17,8 @@ class CustomValidation extends Validation
     {
         $check_array = array(1 => 'png', 2 => 'jpeg', 3 => 'jpg', 4 => 'gif');
         $Extension = mb_strtolower($value);
-        if (array_search($Extension, $check_array)) {
-            return true;
+        if (!array_search($Extension, $check_array)) {
+            return false;
         }
     }
 }
