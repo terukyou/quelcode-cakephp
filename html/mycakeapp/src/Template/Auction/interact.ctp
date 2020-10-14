@@ -4,6 +4,9 @@
     <?php if ($status === 'form') : ?>
         <p>落札者が発送先の情報を入力するまでお待ちください</p>
     <?php endif; ?>
+    <!-- 発送完了していないとき -->
+    <?php if ($status === 'ship') : ?>
+    <?php endif; ?>
 <?php endif; ?>
 
 <!-- 落札者 -->
@@ -23,5 +26,8 @@
         <?= $this->Form->input('Form.phone'); ?>
         <?= $this->Form->submit('送信'); ?>
         <?= $this->Form->end(); ?>
-    <?php } ?>
+    <?php }
+    // 発送完了していないとき
+    if ($status === 'ship') : ?>
+    <?php endif; ?>
 <?php } ?>
