@@ -22,6 +22,7 @@ class AuctionController extends AuctionBaseController
 		$this->loadModel('Bidrequests');
 		$this->loadModel('Bidinfo');
 		$this->loadModel('Bidmessages');
+		$this->loadModel('Buyerinfo');
 		// ログインしているユーザー情報をauthuserに設定
 		$this->set('authuser', $this->Auth->user());
 		// レイアウトをauctionに変更
@@ -187,7 +188,7 @@ class AuctionController extends AuctionBaseController
 	{
 		// 商品の終了フラグを検索
 		$finished = $this->Biditems->find()->select(['finished'])->where(['id' => $id])->first();
-		
+
 		// ログインしているユーザーを変数に挿入
 		$loginUserId = $this->Auth->user('id');
 		// 出品者と落札者のuser_idを検索
@@ -202,17 +203,43 @@ class AuctionController extends AuctionBaseController
 		}
 		// ログインユーザーが出品者・落札者であるか
 		switch (true) {
+			// 出品者
 			case ($loginUserId === $seller['user_id']):
+				$user = 'seller';
+				$this->set('user', $user);
 				break;
-
+			// 落札者
 			case ($loginUserId === $buyer['user_id']):
+				$user = 'buyer';
+				$this->set('user', $user);
 				break;
-
+			// 出品者でも落札者でもない
 			default:
 				$this->Flash->success(__('権限がありません'));
 				// トップページ（index）に移動
 				return $this->redirect(['action' => 'index']);
 				break;
+		}
+		$entity = $this->Buyerinfo->newEntity();
+		$this->set('entity', $entity);
+		$this->set('id', $id);
+	}
+
+	// 落札者の発送情報フォーム
+	public function form($id = null)
+	{
+		if ($this->request->isPost()) {
+			$form = $this->request->data['Form'];
+
+			$form['user_id'] = $this->Auth->user('id');
+			$form['biditem_id'] = $id;
+
+			// フォームの内容をDBに挿入
+			$entity = $this->Buyerinfo->newEntity($form);
+			$this->Buyerinfo->save($entity);
+
+			// /auction/interact/商品id にリダイレクト
+			$this->redirect(['action' => 'interact', $id]);
 		}
 	}
 }
