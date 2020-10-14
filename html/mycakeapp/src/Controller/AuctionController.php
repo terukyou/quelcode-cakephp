@@ -220,6 +220,14 @@ class AuctionController extends AuctionBaseController
 				return $this->redirect(['action' => 'index']);
 				break;
 		}
+		// buyerinfoテーブルに商品idのデータが入っているか検索
+		$form = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
+		// buyerinfoテーブルに値が入っていないとき
+		if (is_null($form)) {
+			$status = 'form';
+		}
+		$this->set('status', $status);
+
 		$entity = $this->Buyerinfo->newEntity();
 		$this->set('entity', $entity);
 		$this->set('id', $id);
