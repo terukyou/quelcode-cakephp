@@ -185,12 +185,21 @@ class AuctionController extends AuctionBaseController
 	// 取引終了後のページ
 	public function interact($id = null)
 	{
+		// 商品の終了フラグを検索
+		$finished = $this->Biditems->find()->select(['finished'])->where(['id' => $id])->first();
+		
 		// ログインしているユーザーを変数に挿入
 		$loginUserId = $this->Auth->user('id');
 		// 出品者と落札者のuser_idを検索
 		$seller = $this->Biditems->find()->select(['user_id'])->where(['id' => $id])->first();
 		$buyer = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first();
 
+		// 終了フラグがtrueでない時
+		if ($finished['finished'] === false) {
+			$this->Flash->success(__('権限がありません'));
+			// トップページ（index）に移動
+			return $this->redirect(['action' => 'index']);
+		}
 		// ログインユーザーが出品者・落札者であるか
 		switch (true) {
 			case ($loginUserId === $seller['user_id']):
