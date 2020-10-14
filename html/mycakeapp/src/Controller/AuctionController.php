@@ -181,4 +181,9 @@ class AuctionController extends AuctionBaseController
 			'limit' => 10])->toArray();
 		$this->set(compact('biditems'));
 	}
+
+	// 取引終了後のページ
+	public function interact($id = null)
+	{
+	}
 }
