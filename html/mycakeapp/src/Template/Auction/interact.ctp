@@ -23,6 +23,8 @@
         <?= $this->Form->end(); ?>
 
     <?php endif; ?>
+    <?php if ($status === 'receive') : ?>
+    <?php endif; ?>
 <?php endif; ?>
 
 <!-- 落札者 -->
@@ -46,5 +48,7 @@
     // 発送完了していないとき
     if ($status === 'ship') : ?>
         <p>落札者が発送先の情報を入力するまでお待ちください</p>
+    <?php endif; ?>
+    <?php if ($status === 'receive') : ?>
     <?php endif; ?>
 <?php } ?>

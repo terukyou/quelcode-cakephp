@@ -220,16 +220,22 @@ class AuctionController extends AuctionBaseController
 				return $this->redirect(['action' => 'index']);
 				break;
 		}
+
 		// buyerinfoテーブルに商品idのデータが入っているか検索
 		$form = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
 		// 発送完了フラグを検索
 		$ship = $this->Biditems->find()->select('shipped')->where(['id' => $id])->first();
+		// 受け取り完了ボタンを検索
+		$receive = $this->Buyerinfo->find()->select('received')->where(['biditem_id' => $id])->first();
+
 		// buyerinfoテーブルに値が入っていないとき
 		if (is_null($form)) {
 			$status = 'form';
 		} elseif ($ship['shipped'] === false) {
 			$this->set('form', $form);
 			$status = 'ship';
+		} elseif ($receive['received'] === false) {
+			$status = 'receive';
 		}
 		$this->set('status', $status);
 
