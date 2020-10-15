@@ -170,4 +170,22 @@ class RatingsController extends AuctionBaseController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    // 各ユーザーの評価ページ
+    public function userrating($id = null)
+    {
+        // 該当ユーザーの名前
+        $userName = $this->Users->get($id)->username;
+        // ユーザーの評価コメント
+        $ratingComments = $this->Ratings->find()->select(['rating_comment'])->where(['appraisee_id' => $id]);
+        // ユーザーの平均評価
+        $avgRating = $this->Ratings->find()->where(['appraisee_id' => $id])->avg('rating_scale');
+        // 一人も評価されていない時
+        if (empty($avgRating)) {
+            $avgRating = '-';
+        }
+        // 小数第2位を切り捨て
+        $avgRating = (floor($avgRating * 10) / 10);
+        $this->set(compact('userName', 'avgRating', 'ratingComments'));
+    }
 }
