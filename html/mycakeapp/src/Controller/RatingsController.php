@@ -92,7 +92,7 @@ class RatingsController extends AuctionBaseController
             default:
                 $this->Flash->success(__('権限がありません'));
                 // トップページ（index）に移動
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'auction', 'action' => 'index']);
                 break;
         }
     // 前に評価したことがあるか
