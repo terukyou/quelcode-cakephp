@@ -236,6 +236,8 @@ class AuctionController extends AuctionBaseController
 			$status = 'ship';
 		} elseif ($receive['received'] === false) {
 			$status = 'receive';
+		} else {
+			return $this->redirect(['controller' => 'ratings', 'action' => 'add', $id]);
 		}
 		$this->set('status', $status);
 
