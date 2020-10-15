@@ -97,6 +97,14 @@ class RatingsController extends AuctionBaseController
                 break;
         }
 
+        // 前に評価したことがあるか検索
+        $rated = $this->Ratings->find()->where(['biditem_id' => $id, 'reviewer_id' => $loginUserId])->first();
+        if (!empty($rated)) {
+            $this->Flash->success(__('すでに評価しています'));
+            // トップページ（index）に移動
+            return $this->redirect(['controller' => 'auction', 'action' => 'index']);
+        }
+
         $rating = $this->Ratings->newEntity();
         if ($this->request->is('post')) {
             $rating = $this->Ratings->patchEntity($rating, $this->request->getData());
