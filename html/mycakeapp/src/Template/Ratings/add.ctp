@@ -14,7 +14,7 @@
     ?>
     <fieldset>
         <legend><?= __('Add Rating') ?></legend>
-        <p>○○さんはいかがでしたか</p>
+        <p><?= $appraiseeName ?>さんはいかがでしたか</p>
         <p>評価</p>
         <?php
         echo $this->Form->radio('rating_scale', [

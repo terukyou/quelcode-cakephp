@@ -106,6 +106,9 @@ class RatingsController extends AuctionBaseController
         }
 
         $rating = $this->Ratings->newEntity();
+        $appraiseeInfo = $this->Users->get($appraiseeId);
+        $appraiseeName = $appraiseeInfo['username'];
+
         if ($this->request->is('post')) {
             $rating = $this->Ratings->patchEntity($rating, $this->request->getData());
 
@@ -120,7 +123,7 @@ class RatingsController extends AuctionBaseController
             }
             $this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
         }
-        $this->set(compact('rating'));
+        $this->set(compact('rating', 'appraiseeName'));
     }
 
     /**
