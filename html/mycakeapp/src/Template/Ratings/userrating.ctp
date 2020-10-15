@@ -8,7 +8,7 @@
     </thead>
     <?php foreach ($ratingComments->toArray() as $com) : ?>
         <tr>
-            <td><?= $com['rating_comment'] ?></td>
+            <td><?php echo h($com['rating_comment']); ?></td>
         </tr>
     <?php endforeach; ?>
 </table>

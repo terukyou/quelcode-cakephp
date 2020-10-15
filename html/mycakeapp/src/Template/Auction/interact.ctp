@@ -7,9 +7,9 @@
     <!-- 発送完了していないとき -->
     <?php if ($status === 'ship') : ?>
         <h4>発送先</h4>
-        [名前] <?= $form['name'] . '<br>'; ?>
-        [住所] <?= $form['home'] . '<br>'; ?>
-        [電話] <?= $form['phone'] . '<br>'; ?>
+        [名前] <?php echo h($form['name']) . '<br>'; ?>
+        [住所] <?php echo h($form['home']) . '<br>'; ?>
+        [電話] <?php echo h($form['phone']) . '<br>'; ?>
 
         <?php echo $this->Form->create(null, [
             'type' => 'post',
