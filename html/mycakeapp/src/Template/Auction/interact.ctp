@@ -6,6 +6,22 @@
     <?php endif; ?>
     <!-- 発送完了していないとき -->
     <?php if ($status === 'ship') : ?>
+        <h4>発送先</h4>
+        [名前] <?= $form['name'] . '<br>'; ?>
+        [住所] <?= $form['home'] . '<br>'; ?>
+        [電話] <?= $form['phone'] . '<br>'; ?>
+
+        <?php echo $this->Form->create(null, [
+            'type' => 'post',
+            'url' => [
+                'controller' => 'Auction',
+                'action' => 'ship', $id
+            ]
+        ]);
+        ?>
+        <?= $this->Form->submit('発送完了ボタン'); ?>
+        <?= $this->Form->end(); ?>
+
     <?php endif; ?>
 <?php endif; ?>
 
@@ -29,5 +45,6 @@
     <?php }
     // 発送完了していないとき
     if ($status === 'ship') : ?>
+        <p>落札者が発送先の情報を入力するまでお待ちください</p>
     <?php endif; ?>
 <?php } ?>

@@ -228,6 +228,7 @@ class AuctionController extends AuctionBaseController
 		if (is_null($form)) {
 			$status = 'form';
 		} elseif ($ship['shipped'] === false) {
+			$this->set('form', $form);
 			$status = 'ship';
 		}
 		$this->set('status', $status);
@@ -251,6 +252,15 @@ class AuctionController extends AuctionBaseController
 			$this->Buyerinfo->save($entity);
 
 			// /auction/interact/商品id にリダイレクト
+			$this->redirect(['action' => 'interact', $id]);
+		}
+	}
+
+	public function ship($id = null)
+	{
+		$biditem = $this->Biditems->get($id);
+		$biditem->shipped = 1;
+		if ($this->Biditems->save($biditem)) {
 			$this->redirect(['action' => 'interact', $id]);
 		}
 	}
