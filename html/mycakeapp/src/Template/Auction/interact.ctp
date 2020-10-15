@@ -23,7 +23,9 @@
         <?= $this->Form->end(); ?>
 
     <?php endif; ?>
+    <!-- 受け取り完了していない時 -->
     <?php if ($status === 'receive') : ?>
+        <p>落札者が受け取り完了ボタンを押すまでお待ちください</p>
     <?php endif; ?>
 <?php endif; ?>
 
@@ -49,6 +51,17 @@
     if ($status === 'ship') : ?>
         <p>落札者が発送先の情報を入力するまでお待ちください</p>
     <?php endif; ?>
+    <!-- 受け取り完了していない時 -->
     <?php if ($status === 'receive') : ?>
+        <?php echo $this->Form->create(null, [
+            'type' => 'post',
+            'url' => [
+                'controller' => 'Auction',
+                'action' => 'receive', $id
+            ]
+        ]);
+        ?>
+        <?= $this->Form->submit('受け取り完了ボタン'); ?>
+        <?= $this->Form->end(); ?>
     <?php endif; ?>
 <?php } ?>

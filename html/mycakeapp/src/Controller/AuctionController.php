@@ -270,4 +270,12 @@ class AuctionController extends AuctionBaseController
 			$this->redirect(['action' => 'interact', $id]);
 		}
 	}
+	public function receive($id = null)
+	{
+		$buyerinfo = $this->Buyerinfo->get($id);
+		$buyerinfo->received = 1;
+		if ($this->Buyerinfo->save($buyerinfo)) {
+			$this->redirect(['action' => 'interact', $id]);
+		}
+	}
 }
