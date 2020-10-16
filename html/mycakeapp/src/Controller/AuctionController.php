@@ -310,7 +310,21 @@ class AuctionController extends AuctionBaseController
 
 	public function ship($id = null)
 	{
+		$loginUserId = $this->Auth->user('id');
+		$seller = $this->Biditems->find()->select(['user_id'])->where(['id' => $id])->first();
+
+		// 発送情報フォームが送られたか検索
+		$formed = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
+		// 発送完了ボタンが押されたか検索
 		$biditem = $this->Biditems->get($id);
+		$shipped = $biditem->shipped;
+
+		// ・発送情報のデータがない・ユーザーが出品者でない・発送完了済み
+		if (empty($formed) || $seller['user_id'] !== $loginUserId || $shipped === true) {
+			$this->Flash->error(__('権限がありません'));
+			return $this->redirect(['action' => 'index']);
+		}
+
 		$biditem->shipped = 1;
 		if ($this->Biditems->save($biditem)) {
 			$this->redirect(['action' => 'interact', $id]);
