@@ -332,7 +332,25 @@ class AuctionController extends AuctionBaseController
 	}
 	public function receive($id = null)
 	{
+		// ログインしているユーザーを変数に挿入
+		$loginUserId = $this->Auth->user('id');
+		// 落札者のuser_idを検索
+		$buyer = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first();
+
+		// 発送完了ボタンが押されたか検索
+		$biditem = $this->Biditems->get($id);
+		$shipped = $biditem->shipped;
+
+		// 受取完了ボタンが押されたか検索
 		$buyerinfo = $this->Buyerinfo->get($id);
+		$received = $buyerinfo->received;
+
+		// ・発送未完了・落札者でない・受取完了済み
+		if ($shipped === false || $loginUserId !== $buyer['user_id'] || $received === true) {
+			$this->Flash->error(__('権限がありません'));
+			return $this->redirect(['action' => 'index']);
+		}
+
 		$buyerinfo->received = 1;
 		if ($this->Buyerinfo->save($buyerinfo)) {
 			$this->redirect(['action' => 'interact', $id]);
