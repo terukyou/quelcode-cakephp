@@ -37,7 +37,9 @@
 		<th scope="col">落札日時</th>
 	</tr>
 	<tr>
-		<td><?= h($biditem->bidinfo->user->username) ?></td>
+		<td><a href="<?= $this->Url->build(['controller' => 'ratings', 'action' => 'userrating', $biditem->user->id]) ?>">
+			<?= h($biditem->bidinfo->user->username) ?>
+		</a></td>
 		<td><?= h($biditem->bidinfo->price) ?>円</td>
 		<td><?= h($biditem->endtime) ?></td>
 	</tr>
