@@ -71,10 +71,19 @@ class AuctionBaseController extends AppController
 		if($user['role'] === 'admin'){
 		   return true;
 		}
-		// 一般ユーザーはAuctionControllerのみtrue、他はfalse
+		// 一般ユーザーはAuctionController,Rating(add,userrating)のみtrue、他はfalse
 		if($user['role'] === 'user'){
 			if ($this->name == 'Auction'){
 				return true;
+			} elseif (($this->name == 'Ratings')) {
+				// アクション名の取得を変数に挿入
+				$actionName = $this->request->getParam('action');
+				// アクション名がaddかuserratingのみtrue
+				if ($actionName === 'add' || $actionName === 'userrating') {
+					return true;
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
