@@ -276,6 +276,18 @@ class AuctionController extends AuctionBaseController
 	// 落札者の発送情報フォーム
 	public function form($id = null)
 	{
+		// ログインしているユーザーを変数に挿入
+		$loginUserId = $this->Auth->user('id');
+		// 落札者のuser_idを検索
+		$buyer = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first();
+
+		// buyerinfoテーブルに商品idのデータが入っているか検索
+		$form = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
+
+		if (!empty($form) || $buyer['user_id'] !== $loginUserId) {
+			$this->Flash->error(__('権限がありません'));
+			return $this->redirect(['action' => 'index']);
+		}
 		if ($this->request->isPost()) {
 			$form = $this->request->data['Form'];
 
