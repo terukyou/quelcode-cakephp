@@ -18,6 +18,7 @@
 				<td class="actions">
 					<?php if (!empty($biditem->bidinfo)) : ?>
 						<?= $this->Html->link(__('View'), ['action' => 'msg', $biditem->bidinfo->id]) ?>
+						<?= $this->Html->link(__('Interact'), ['action' => 'interact', $biditem->id]) ?>
 					<?php endif; ?>
 				</td>
 			</tr>

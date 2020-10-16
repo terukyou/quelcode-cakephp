@@ -34,6 +34,7 @@ class AuctionController extends AuctionBaseController
 	{
 		// ページネーションでBiditemsを取得
 		$auction = $this->paginate('Biditems', [
+			'contain' => ['Bidinfo'],
 			'order' =>['endtime'=>'desc'], 
 			'limit' => 10]);
 		$this->set(compact('auction'));
