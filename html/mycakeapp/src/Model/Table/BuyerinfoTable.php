@@ -54,27 +54,33 @@ class BuyerinfoTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
+        $validator->provider('custom', 'App\Model\Validation\CustomValidation');
         $validator
             ->integer('biditem_id')
             ->allowEmptyString('biditem_id', null, 'create');
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 100)
+            ->maxLength('name', 100, '100文字以内で入力ください')
             ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->notEmptyString('name', '必ず入力してください');
 
         $validator
             ->scalar('home')
-            ->maxLength('home', 1000)
+            ->maxLength('home', 1000, '1000文字以内で入力ください')
             ->requirePresence('home', 'create')
-            ->notEmptyString('home');
+            ->notEmptyString('home', '必ず入力してください');
 
         $validator
             ->scalar('phone')
-            ->maxLength('phone', 13)
+            ->maxLength('phone', 13, '13文字以内で入力ください')
             ->requirePresence('phone', 'create')
-            ->notEmptyString('phone');
+            ->notEmptyString('phone', '必ず入力してください')
+            ->add('phone', 'isPhoneNumber', [
+                'rule' => ['isPhoneNumber'],
+                'provider' => 'custom',
+                'message' => '数字と「-」のみでご入力ください',
+            ]);
 
         $validator
             ->boolean('received')

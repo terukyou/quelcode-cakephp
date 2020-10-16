@@ -68,11 +68,11 @@ class RatingsTable extends Table
         $validator
             ->integer('rating_scale')
             ->requirePresence('rating_scale', 'create')
-            ->notEmptyString('rating_scale');
+            ->notEmptyString('rating_scale', '必ず選択してください');
 
         $validator
             ->scalar('rating_comment')
-            ->maxLength('rating_comment', 1000)
+            ->maxLength('rating_comment', 1000, '1000文字以内で入力してください')
             ->requirePresence('rating_comment', 'create')
             ->notEmptyString('rating_comment');
 
