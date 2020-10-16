@@ -22,7 +22,11 @@
 			// (bidinfoテーブルに商品のデータがある)&&(ユーザーが出品者か落札者である)
 			if ((!empty($bidinfo)) && (($biditem->user_id === $authuser['id']) || ($bidinfo->user_id === $authuser['id']))) : ?>
 				<!-- 取引終了後のページのリンクを表示 -->
-				<?= $this->Html->link(__('Interact'), ['action' => 'interact', $biditem->id]) ?>
+				<?php if (in_array($biditem->id, $endOfTransaction)) : ?>
+					取引終了
+				<?php else : ?>
+					<?= $this->Html->link(__('Interact'), ['action' => 'interact', $biditem->id]) ?>
+				<?php endif; ?>
 			<?php endif; ?>
 		</td>
 	</tr>

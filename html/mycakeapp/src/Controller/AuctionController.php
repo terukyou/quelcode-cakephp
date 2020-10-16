@@ -23,6 +23,7 @@ class AuctionController extends AuctionBaseController
 		$this->loadModel('Bidinfo');
 		$this->loadModel('Bidmessages');
 		$this->loadModel('Buyerinfo');
+		$this->loadModel('Ratings');
 		// ログインしているユーザー情報をauthuserに設定
 		$this->set('authuser', $this->Auth->user());
 		// レイアウトをauctionに変更
@@ -37,7 +38,16 @@ class AuctionController extends AuctionBaseController
 			'contain' => ['Bidinfo'],
 			'order' =>['endtime'=>'desc'], 
 			'limit' => 10]);
-		$this->set(compact('auction'));
+		$ratings = $this->Ratings->find()->select('biditem_id')->where(['reviewer_id' => $this->Auth->user('id')])->toArray();
+		if (!empty($ratings)) {
+			foreach ($ratings as $rate) {
+				$endOfTransaction[] = $rate->biditem_id;
+			}
+		} else {
+			$endOfTransaction = array(0);
+		}
+
+		$this->set(compact('auction', 'endOfTransaction'));
 	}
 
 	// 商品情報の表示
@@ -169,7 +179,15 @@ class AuctionController extends AuctionBaseController
 			'contain' => ['Users', 'Biditems'],
 			'order'=>['created'=>'desc'],
 			'limit' => 10])->toArray();
-		$this->set(compact('bidinfo'));
+		$ratings = $this->Ratings->find()->select('biditem_id')->where(['reviewer_id' => $this->Auth->user('id')])->toArray();
+		if (!empty($ratings)) {
+			foreach ($ratings as $rate) {
+				$endOfTransaction[] = $rate->biditem_id;
+			}
+		} else {
+			$endOfTransaction = array(0);
+		}
+		$this->set(compact('bidinfo', 'endOfTransaction'));
 	}
 
 	// 出品情報の表示
@@ -181,7 +199,15 @@ class AuctionController extends AuctionBaseController
 			'contain' => ['Users', 'Bidinfo'],
 			'order'=>['created'=>'desc'],
 			'limit' => 10])->toArray();
-		$this->set(compact('biditems'));
+		$ratings = $this->Ratings->find()->select('biditem_id')->where(['reviewer_id' => $this->Auth->user('id')])->toArray();
+		if (!empty($ratings)) {
+			foreach ($ratings as $rate) {
+				$endOfTransaction[] = $rate->biditem_id;
+			}
+		} else {
+			$endOfTransaction = array(0);
+		}
+		$this->set(compact('biditems', 'endOfTransaction'));
 	}
 
 	// 取引終了後のページ
