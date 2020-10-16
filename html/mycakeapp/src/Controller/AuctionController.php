@@ -284,11 +284,16 @@ class AuctionController extends AuctionBaseController
 
 			// フォームの内容をDBに挿入
 			$entity = $this->Buyerinfo->newEntity($form);
-			$this->Buyerinfo->save($entity);
-
-			// /auction/interact/商品id にリダイレクト
-			$this->redirect(['action' => 'interact', $id]);
+			if ($this->Buyerinfo->save($entity)) {
+				$this->Flash->success(__('保存しました。'));
+				// /auction/interact/商品id にリダイレクト
+				$this->redirect(['action' => 'interact', $id]);
+			} else {
+				$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
+			}
+			$this->setAction('interact', $id);
 		}
+		$this->set(compact('entity'));
 	}
 
 	public function ship($id = null)
