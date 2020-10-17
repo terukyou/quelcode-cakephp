@@ -299,10 +299,9 @@ class AuctionController extends AuctionBaseController
 			if ($this->Buyerinfo->save($entity)) {
 				$this->Flash->success(__('保存しました。'));
 				// /auction/interact/商品id にリダイレクト
-				$this->redirect(['action' => 'interact', $id]);
-			} else {
-				$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
+				return $this->redirect(['action' => 'interact', $id]);
 			}
+			$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 			$this->setAction('interact', $id);
 		}
 		$this->set(compact('entity'));
@@ -327,7 +326,7 @@ class AuctionController extends AuctionBaseController
 
 		$biditem->shipped = 1;
 		if ($this->Biditems->save($biditem)) {
-			$this->redirect(['action' => 'interact', $id]);
+			return $this->redirect(['action' => 'interact', $id]);
 		}
 	}
 	public function receive($id = null)
@@ -353,7 +352,7 @@ class AuctionController extends AuctionBaseController
 
 		$buyerinfo->received = 1;
 		if ($this->Buyerinfo->save($buyerinfo)) {
-			$this->redirect(['action' => 'interact', $id]);
+			return $this->redirect(['action' => 'interact', $id]);
 		}
 	}
 }
