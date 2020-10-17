@@ -249,19 +249,19 @@ class AuctionController extends AuctionBaseController
 		}
 
 		// buyerinfoテーブルに商品idのデータが入っているか検索
-		$form = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
+		$formed = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
 		// 発送完了フラグを検索
-		$ship = $this->Biditems->find()->select('shipped')->where(['id' => $id])->first();
+		$shiped = $this->Biditems->find()->select('shipped')->where(['id' => $id])->first();
 		// 受け取り完了ボタンを検索
-		$receive = $this->Buyerinfo->find()->select('received')->where(['biditem_id' => $id])->first();
+		$received = $this->Buyerinfo->find()->select('received')->where(['biditem_id' => $id])->first();
 
 		// buyerinfoテーブルに値が入っていないとき
-		if (is_null($form)) {
+		if (is_null($formed)) {
 			$status = 'form';
-		} elseif ($ship['shipped'] === false) {
-			$this->set('form', $form);
+		} elseif ($shiped['shipped'] === false) {
+			$this->set('form', $formed);
 			$status = 'ship';
-		} elseif ($receive['received'] === false) {
+		} elseif ($received['received'] === false) {
 			$status = 'receive';
 		} else {
 			return $this->redirect(['controller' => 'ratings', 'action' => 'add', $id]);
@@ -282,9 +282,9 @@ class AuctionController extends AuctionBaseController
 		$buyer = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first();
 
 		// buyerinfoテーブルに商品idのデータが入っているか検索
-		$form = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
+		$formed = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
 
-		if (!empty($form) || $buyer['user_id'] !== $loginUserId) {
+		if (!empty($formed) || $buyer['user_id'] !== $loginUserId) {
 			$this->Flash->error(__('権限がありません'));
 			return $this->redirect(['action' => 'index']);
 		}
