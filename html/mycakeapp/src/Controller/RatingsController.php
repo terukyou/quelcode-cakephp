@@ -183,9 +183,10 @@ class RatingsController extends AuctionBaseController
         // 一人も評価されていない時
         if (empty($avgRating)) {
             $avgRating = '-';
+        } else {
+            // 小数第2位を切り捨て
+            $avgRating = (floor($avgRating * 10) / 10);
         }
-        // 小数第2位を切り捨て
-        $avgRating = (floor($avgRating * 10) / 10);
         $this->set(compact('userName', 'avgRating', 'ratingComments'));
     }
 }
