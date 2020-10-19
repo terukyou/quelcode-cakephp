@@ -24,7 +24,7 @@
             ['text' => 4, 'value' => 4],
             ['text' => 5, 'value' => 5],
         ]);
-        echo $this->Form->control('rating_comment', ['label' => 'コメント']);
+        echo $this->Form->control('rating_comment', ['label' => 'コメント', 'required' => false]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

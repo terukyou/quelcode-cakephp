@@ -74,7 +74,7 @@ class RatingsTable extends Table
             ->scalar('rating_comment')
             ->maxLength('rating_comment', 1000, '1000文字以内で入力してください')
             ->requirePresence('rating_comment', 'create')
-            ->notEmptyString('rating_comment');
+            ->allowEmptyString('rating_comment');
 
         return $validator;
     }

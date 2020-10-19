@@ -32,7 +32,7 @@ class CreateRatings extends AbstractMigration
         $table->addColumn('rating_comment', 'string', [
             'default' => null,
             'limit' => 1000,
-            'null' => false,
+            'null' => true,
         ]);
         $table->addColumn('reviewer_id', 'integer', [
             'default' => null,
