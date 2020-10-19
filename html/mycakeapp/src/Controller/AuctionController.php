@@ -252,8 +252,6 @@ class AuctionController extends AuctionBaseController
 		$formed = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
 		// 発送完了フラグを検索
 		$shipped = $this->Biditems->find()->select('shipped')->where(['id' => $id])->first()->shipped;
-		// 受け取り完了ボタンを検索
-		$received = $this->Buyerinfo->find()->select('received')->where(['biditem_id' => $id])->first()->received;
 
 		// buyerinfoテーブルに値が入っていないとき
 		if (is_null($formed)) {
@@ -261,7 +259,8 @@ class AuctionController extends AuctionBaseController
 		} elseif ($shipped === false) {
 			$this->set('form', $formed);
 			$status = 'ship';
-		} elseif ($received === false) {
+		} elseif ($formed->received === false) {
+			// 受け取り未完了の時
 			$status = 'receive';
 		} else {
 			return $this->redirect(['controller' => 'ratings', 'action' => 'add', $id]);
