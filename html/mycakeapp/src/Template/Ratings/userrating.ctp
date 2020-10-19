@@ -1,4 +1,4 @@
-<h4><?= $userName ?></h4>
+<h4><?php echo h($userName); ?></h4>
 <p>平均 <?php echo sprintf('%.1f', $avgRating); ?></p>
 <table>
     <thead>
