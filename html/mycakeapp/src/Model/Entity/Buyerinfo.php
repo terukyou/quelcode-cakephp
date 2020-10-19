@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -27,7 +28,7 @@ class Buyerinfo extends Entity
      * @var array
      */
     protected $_accessible = [
-        'biditem_id'=>true,
+        'biditem_id' => true,
         'user_id' => true,
         'name' => true,
         'home' => true,
