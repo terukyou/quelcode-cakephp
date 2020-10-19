@@ -219,8 +219,8 @@ class AuctionController extends AuctionBaseController
 		// ログインしているユーザーを変数に挿入
 		$loginUserId = $this->Auth->user('id');
 		// 出品者と落札者のuser_idを検索
-		$seller = $this->Biditems->find()->select(['user_id'])->where(['id' => $id])->first();
-		$buyer = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first();
+		$sellerId = $this->Biditems->find()->select(['user_id'])->where(['id' => $id])->first()->user_id;
+		$buyerId = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first()->user_id;
 
 		// bidinfoテーブルに商品idのデータが入っていない時
 		if (is_null($bidinfo)) {
@@ -231,12 +231,12 @@ class AuctionController extends AuctionBaseController
 		// ログインユーザーが出品者・落札者であるか
 		switch (true) {
 			// 出品者
-			case ($loginUserId === $seller['user_id']):
+			case ($loginUserId === $sellerId):
 				$user = 'seller';
 				$this->set('user', $user);
 				break;
 			// 落札者
-			case ($loginUserId === $buyer['user_id']):
+			case ($loginUserId === $buyerId):
 				$user = 'buyer';
 				$this->set('user', $user);
 				break;
@@ -251,17 +251,17 @@ class AuctionController extends AuctionBaseController
 		// buyerinfoテーブルに商品idのデータが入っているか検索
 		$formed = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
 		// 発送完了フラグを検索
-		$shiped = $this->Biditems->find()->select('shipped')->where(['id' => $id])->first();
+		$shipped = $this->Biditems->find()->select('shipped')->where(['id' => $id])->first()->shipped;
 		// 受け取り完了ボタンを検索
-		$received = $this->Buyerinfo->find()->select('received')->where(['biditem_id' => $id])->first();
+		$received = $this->Buyerinfo->find()->select('received')->where(['biditem_id' => $id])->first()->received;
 
 		// buyerinfoテーブルに値が入っていないとき
 		if (is_null($formed)) {
 			$status = 'form';
-		} elseif ($shiped['shipped'] === false) {
+		} elseif ($shipped === false) {
 			$this->set('form', $formed);
 			$status = 'ship';
-		} elseif ($received['received'] === false) {
+		} elseif ($received === false) {
 			$status = 'receive';
 		} else {
 			return $this->redirect(['controller' => 'ratings', 'action' => 'add', $id]);
@@ -279,12 +279,12 @@ class AuctionController extends AuctionBaseController
 		// ログインしているユーザーを変数に挿入
 		$loginUserId = $this->Auth->user('id');
 		// 落札者のuser_idを検索
-		$buyer = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first();
+		$buyerId = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first()->user_id;
 
 		// buyerinfoテーブルに商品idのデータが入っているか検索
 		$formed = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
 
-		if (!empty($formed) || $buyer['user_id'] !== $loginUserId) {
+		if (!empty($formed) || $buyerId !== $loginUserId) {
 			$this->Flash->error(__('権限がありません'));
 			return $this->redirect(['action' => 'index']);
 		}
@@ -310,7 +310,7 @@ class AuctionController extends AuctionBaseController
 	public function ship($id = null)
 	{
 		$loginUserId = $this->Auth->user('id');
-		$seller = $this->Biditems->find()->select(['user_id'])->where(['id' => $id])->first();
+		$sellerId = $this->Biditems->find()->select(['user_id'])->where(['id' => $id])->first()->user_id;
 
 		// 発送情報フォームが送られたか検索
 		$formed = $this->Buyerinfo->find('all')->where(['biditem_id' => $id])->first();
@@ -319,7 +319,7 @@ class AuctionController extends AuctionBaseController
 		$shipped = $biditem->shipped;
 
 		// ・発送情報のデータがない・ユーザーが出品者でない・発送完了済み
-		if (empty($formed) || $seller['user_id'] !== $loginUserId || $shipped === true) {
+		if (empty($formed) || $sellerId !== $loginUserId || $shipped === true) {
 			$this->Flash->error(__('権限がありません'));
 			return $this->redirect(['action' => 'index']);
 		}
@@ -334,7 +334,7 @@ class AuctionController extends AuctionBaseController
 		// ログインしているユーザーを変数に挿入
 		$loginUserId = $this->Auth->user('id');
 		// 落札者のuser_idを検索
-		$buyer = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first();
+		$buyerId = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first()->user_id;
 
 		// 発送完了ボタンが押されたか検索
 		$biditem = $this->Biditems->get($id);
@@ -345,7 +345,7 @@ class AuctionController extends AuctionBaseController
 		$received = $buyerinfo->received;
 
 		// ・発送未完了・落札者でない・受取完了済み
-		if ($shipped === false || $loginUserId !== $buyer['user_id'] || $received === true) {
+		if ($shipped === false || $loginUserId !== $buyerId || $received === true) {
 			$this->Flash->error(__('権限がありません'));
 			return $this->redirect(['action' => 'index']);
 		}
