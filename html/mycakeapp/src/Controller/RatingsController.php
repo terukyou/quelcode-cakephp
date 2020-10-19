@@ -64,7 +64,7 @@ class RatingsController extends AuctionBaseController
      */
     public function add($id = null)
     {
-    // 受け取り完了しているかどうか
+        // 受け取り完了しているかどうか
         // 受け取り完了フラグを検索
         $received = $this->Buyerinfo->find()->select(['received'])->where(['biditem_id' => $id])->first();
         //受け取り完了していない時/auction/indexにリダイレクト
@@ -73,41 +73,38 @@ class RatingsController extends AuctionBaseController
             // トップページ（index）に移動
             return $this->redirect(['controller' => 'auction', 'action' => 'index']);
         }
-    // ログインユーザーが出品者・落札者であるか
+        // ログインユーザーが出品者・落札者であるか
         // ログインしているユーザーを変数に挿入
         $loginUserId = $this->Auth->user('id');
         // 出品者と落札者のuser_idを検索
         $seller = $this->Biditems->find()->select(['user_id'])->where(['id' => $id])->first();
         $buyer = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first();
         switch (true) {
-            // 出品者
-            case ($loginUserId === $seller['user_id']):
+            case ($loginUserId === $seller['user_id']): // 出品者
                 $appraiseeId = $buyer['user_id'];
                 break;
-            // 落札者
-            case ($loginUserId === $buyer['user_id']):
+            case ($loginUserId === $buyer['user_id']): // 落札者
                 $appraiseeId = $seller['user_id'];
                 break;
-            // 出品者でも落札者でもない
-            default:
+            default: // 出品者でも落札者でもない
                 $this->Flash->success(__('権限がありません'));
                 // トップページ（index）に移動
                 return $this->redirect(['controller' => 'auction', 'action' => 'index']);
                 break;
         }
-    // 前に評価したことがあるか
+        // 前に評価したことがあるか
         $rated = $this->Ratings->find()->where(['biditem_id' => $id, 'reviewer_id' => $loginUserId])->first();
         if (!empty($rated)) {
             $this->Flash->success(__('すでに評価しています'));
             // トップページ（index）に移動
             return $this->redirect(['controller' => 'auction', 'action' => 'index']);
         }
-    // インスタンスを用意
+        // インスタンスを用意
         $rating = $this->Ratings->newEntity();
         // 取引相手の名前を変数に挿入
         $appraiseeInfo = $this->Users->get($appraiseeId);
         $appraiseeName = $appraiseeInfo['username'];
-    // フォームが送信されたとき
+        // フォームが送信されたとき
         if ($this->request->is('post')) {
             $rating = $this->Ratings->patchEntity($rating, $this->request->getData());
 

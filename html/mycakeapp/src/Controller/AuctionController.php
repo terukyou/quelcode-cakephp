@@ -237,18 +237,15 @@ class AuctionController extends AuctionBaseController
 		}
 		// ログインユーザーが出品者・落札者であるか
 		switch (true) {
-				// 出品者
-			case ($loginUserId === $seller['user_id']):
+			case ($loginUserId === $seller['user_id']): // 出品者
 				$user = 'seller';
 				$this->set('user', $user);
 				break;
-				// 落札者
-			case ($loginUserId === $buyer['user_id']):
+			case ($loginUserId === $buyer['user_id']): // 落札者
 				$user = 'buyer';
 				$this->set('user', $user);
 				break;
-				// 出品者でも落札者でもない
-			default:
+			default: // 出品者でも落札者でもない
 				$this->Flash->success(__('権限がありません'));
 				// トップページ（index）に移動
 				return $this->redirect(['action' => 'index']);
