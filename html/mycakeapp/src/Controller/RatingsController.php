@@ -66,9 +66,9 @@ class RatingsController extends AuctionBaseController
     {
     // 受け取り完了しているかどうか
         // 受け取り完了フラグを検索
-        $received = $this->Buyerinfo->find()->select(['received'])->where(['biditem_id' => $id])->first()->received;
+        $received = $this->Buyerinfo->find()->select(['received'])->where(['biditem_id' => $id])->first();
         //受け取り完了していない時/auction/indexにリダイレクト
-        if (empty($received) || ($received === false)) {
+        if (empty($received) || ($received['received'] === false)) {
             $this->Flash->success(__('権限がありません'));
             // トップページ（index）に移動
             return $this->redirect(['controller' => 'auction', 'action' => 'index']);
@@ -77,16 +77,16 @@ class RatingsController extends AuctionBaseController
         // ログインしているユーザーを変数に挿入
         $loginUserId = $this->Auth->user('id');
         // 出品者と落札者のuser_idを検索
-        $sellerId = $this->Biditems->find()->select(['user_id'])->where(['id' => $id])->first()->user_id;
-        $buyerId = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first()->user_id;
+        $seller = $this->Biditems->find()->select(['user_id'])->where(['id' => $id])->first();
+        $buyer = $this->Bidinfo->find()->select(['user_id'])->where(['biditem_id' => $id])->first();
         switch (true) {
             // 出品者
-            case ($loginUserId === $sellerId):
-                $appraiseeId = $buyerId;
+            case ($loginUserId === $seller['user_id']):
+                $appraiseeId = $buyer['user_id'];
                 break;
             // 落札者
-            case ($loginUserId === $buyerId):
-                $appraiseeId = $sellerId;
+            case ($loginUserId === $buyer['user_id']):
+                $appraiseeId = $seller['user_id'];
                 break;
             // 出品者でも落札者でもない
             default:
