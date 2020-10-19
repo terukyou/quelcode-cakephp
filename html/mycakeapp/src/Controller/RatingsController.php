@@ -175,7 +175,12 @@ class RatingsController extends AuctionBaseController
     public function userrating($id = null)
     {
         // 該当ユーザーの名前
-        $userName = $this->Users->get($id)->username;
+        $userName = $this->Users->find()->select('username')->where(['id' => $id])->first()->username;
+        if (empty($userName)) {
+            $this->Flash->success(__('ユーザーが存在していません'));
+            // トップページ（index）に移動
+            return $this->redirect(['controller' => 'auction', 'action' => 'index']);
+        }
         // ユーザーの評価コメント
         $ratingComments = $this->Ratings->find()->select(['rating_comment'])->where(['appraisee_id' => $id]);
         // ユーザーの平均評価
