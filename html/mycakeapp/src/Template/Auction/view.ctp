@@ -37,7 +37,7 @@
 		<th scope="col">落札日時</th>
 	</tr>
 	<tr>
-		<td><a href="<?= $this->Url->build(['controller' => 'ratings', 'action' => 'userrating', $biditem->user->id]) ?>">
+		<td><a href="<?= $this->Url->build(['controller' => 'ratings', 'action' => 'userrating', $biditem->bidinfo->user_id]) ?>">
 			<?= h($biditem->bidinfo->user->username) ?>
 		</a></td>
 		<td><?= h($biditem->bidinfo->price) ?>円</td>
@@ -64,7 +64,7 @@
 	<tbody>
 	<?php foreach ($bidrequests as $bidrequest) : ?>
 	<tr>
-		<td><a href="<?= $this->Url->build(['controller' => 'ratings', 'action' => 'userrating', $bidrequest->user->id]) ?>">
+	<td><a href="<?= $this->Url->build(['controller' => 'ratings', 'action' => 'userrating', $bidrequest->user->id]) ?>">
 			<?= h($bidrequest->user->username) ?>
 		</a></td>
 		<td><?= h($bidrequest->price) ?>円</td>
