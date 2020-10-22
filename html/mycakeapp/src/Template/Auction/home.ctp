@@ -1,4 +1,4 @@
-<h2><?=$authuser['username'] ?> のホーム</h2>
+<h2><?= $authuser['username'] ?> のホーム</h2>
 <h3>※落札情報</h3>
 <table cellpadding="0" cellspacing="0">
 <thead>
@@ -10,13 +10,18 @@
 	</tr>
 </thead>
 <tbody>
-	<?php foreach ($bidinfo as $info): ?>
+	<?php foreach ($bidinfo as $info) : ?>
 	<tr>
 		<td><?= h($info->id) ?></td>
 		<td><?= h($info->biditem->name) ?></td>
 		<td><?= h($info->created) ?></td>
 		<td class="actions">
 			<?= $this->Html->link(__('View'), ['action' => 'msg', $info->id]) ?>
+			<?php if (in_array($info->biditem_id, $endOfTransaction)) : ?>
+				取引終了
+			<?php else : ?>
+				<?= $this->Html->link(__('Interact'), ['action' => 'interact', $info->biditem_id]) ?>
+			<?php endif; ?>
 		</td>
 	</tr>
 	<?php endforeach; ?>
@@ -33,4 +38,3 @@
 	</ul>
 </div>
 <h6><?= $this->Html->link(__('出品情報に移動 >>'), ['action' => 'home2']) ?></h6>
-

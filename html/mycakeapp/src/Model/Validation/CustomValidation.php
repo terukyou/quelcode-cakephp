@@ -18,5 +18,12 @@ class CustomValidation extends Validation
         $check_ok_array = ['png', 'jpeg', 'jpg', 'gif'];
         $extension = mb_strtolower($value);
         return (bool)array_search($extension, $check_ok_array);
+
+class CustomValidation extends Validation
+{
+    // 数字とハイフンのみ許可
+    public static function isPhoneNumber($value)
+    {
+        return (bool)preg_match("/^[0-9\-]+$/", $value);
     }
 }

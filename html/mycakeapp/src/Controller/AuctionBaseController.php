@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -39,42 +40,55 @@ class AuctionBaseController extends AppController
 	}
 
 	// ログイン処理
-	function login(){
+	function login()
+	{
 		// POST時の処理
-		if($this->request->isPost()) {
+		if ($this->request->isPost()) {
 			$user = $this->Auth->identify();
 			// Authのidentifyをユーザーに設定
-			if(!empty($user)){
+			if (!empty($user)) {
 				$this->Auth->setUser($user);
 				return $this->redirect($this->Auth->redirectUrl());
 			}
 			$this->Flash->error('ユーザー名かパスワードが間違っています。');
 		}
 	}
-	
+
 	// ログアウト処理
-	public function logout() {
+	public function logout()
+	{
 		// セッションを破棄
 		$this->request->session()->destroy();
 		return $this->redirect($this->Auth->logout());
 	}
 
 	// 認証をしないページの設定
-	public function beforeFilter(Event $event) {
+	public function beforeFilter(Event $event)
+	{
 		parent::beforeFilter($event);
 		$this->Auth->allow([]);
 	}
-	
+
 	// 認証時のロールの処理
-	public function isAuthorized($user = null){
+	public function isAuthorized($user = null)
+	{
 		// 管理者はtrue
-		if($user['role'] === 'admin'){
-		   return true;
+		if ($user['role'] === 'admin') {
+			return true;
 		}
-		// 一般ユーザーはAuctionControllerのみtrue、他はfalse
-		if($user['role'] === 'user'){
-			if ($this->name == 'Auction'){
+		// 一般ユーザーはAuctionController,Rating(add,userrating)のみtrue、他はfalse
+		if ($user['role'] === 'user') {
+			if ($this->name == 'Auction') {
 				return true;
+			} elseif (($this->name == 'Ratings')) {
+				// アクション名の取得を変数に挿入
+				$actionName = $this->request->getParam('action');
+				// アクション名がaddかuserratingのみtrue
+				if ($actionName === 'add' || $actionName === 'userrating') {
+					return true;
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}

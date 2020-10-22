@@ -10,13 +10,24 @@
 	</tr>
 </thead>
 <tbody>
-	<?php foreach ($auction as $biditem): ?>
+	<?php foreach ($auction as $biditem) : ?>
 	<tr>
 		<td><?= h($biditem->name) ?></td>
-		<td><?= h($biditem->finished ? 'Finished':'') ?></td>
+		<td><?= h($biditem->finished ? 'Finished' : '') ?></td>
 		<td><?= h($biditem->endtime) ?></td>
 		<td class="actions">
 			<?= $this->Html->link(__('View'), ['action' => 'view', $biditem->id]) ?>
+			<?php
+			$bidinfo = $biditem->bidinfo;
+			// (bidinfoテーブルに商品のデータがある)&&(ユーザーが出品者か落札者である)
+			if ((!empty($bidinfo)) && (($biditem->user_id === $authuser['id']) || ($bidinfo->user_id === $authuser['id']))) : ?>
+				<!-- 取引終了後のページのリンクを表示 -->
+				<?php if (in_array($biditem->id, $endOfTransaction)) : ?>
+					取引終了
+				<?php else : ?>
+					<?= $this->Html->link(__('Interact'), ['action' => 'interact', $biditem->id]) ?>
+				<?php endif; ?>
+			<?php endif; ?>
 		</td>
 	</tr>
 	<?php endforeach; ?>
