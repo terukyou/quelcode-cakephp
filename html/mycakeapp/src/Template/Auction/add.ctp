@@ -7,6 +7,7 @@
 		echo '<p><strong>USER: ' . $authuser['username'] . '</strong></p>';
 		echo $this->Form->control('name');
 		echo $this->Form->hidden('finished', ['value' => 0]);
+		echo $this->Form->hidden('shipped', ['value' => 0]);
 		echo $this->Form->control('endtime');
 	?>
 </fieldset>
