@@ -25,3 +25,6 @@ table tr th.small {
 nav.sidebar {
 	background:#f6f6ff;
 }
+.error-message{
+	color:red;
+}

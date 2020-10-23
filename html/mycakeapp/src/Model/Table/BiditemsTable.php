@@ -63,6 +63,9 @@ class BiditemsTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
+        // CustomValidationを「custom」で使用可能に
+        $validator->provider('custom', 'App\Model\Validation\CustomValidation');
+
         $validator
             ->integer('id')
             ->allowEmptyString('id', null, 'create');
@@ -72,6 +75,30 @@ class BiditemsTable extends Table
             ->maxLength('name', 100)
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
+
+        $validator
+            ->scalar('description')
+            ->maxLength('description', 1000)
+            ->requirePresence('description', 'create')
+            ->notEmptyString('description', '詳細情報を入力してください')
+            // 「custom」のNotBlankOnlyで空白のみだとエラー
+            ->add('description', 'ruleName', [
+                'rule' => ['NotBlankOnly'],
+                'provider' => 'custom',
+                'message' => '詳細情報を入力してください'
+            ]);
+
+        $validator
+            ->scalar('image_name')
+            ->maxLength('image_name', 100)
+            ->requirePresence('image_name', 'create')
+            ->notEmptyString('image_name', 'ファイルを選択してください')
+            // 「custom」のisImageExtensionで拡張子チェック
+            ->add('fileType', 'ruleName', [
+                'rule' => ['isImageExtension'],
+                'provider' => 'custom',
+                'message' => '拡張子がpng、jpg、jpeg、gifである画像を指定してください'
+            ]);
 
         $validator
             ->boolean('finished')
