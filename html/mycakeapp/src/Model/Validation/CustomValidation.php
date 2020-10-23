@@ -4,9 +4,14 @@ namespace App\Model\Validation;
 
 use Cake\Validation\Validation;
 
-// カスタムバリデーションの作成
 class CustomValidation extends Validation
 {
+    // 数字とハイフンのみ許可
+    public static function isPhoneNumber($value)
+    {
+        return (bool)preg_match("/^[0-9\-]+$/", $value);
+    }
+
     // 空白文字のみの場合falseを返す
     public function NotBlankOnly($value)
     {

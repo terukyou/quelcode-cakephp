@@ -11,7 +11,9 @@
 </tr>
 <tr>
 	<th class="small" scope="row">出品者</th>
-	<td><?= $biditem->has('user') ? $biditem->user->username : '' ?></td>
+	<td><a href="<?= $this->Url->build(['controller' => 'ratings', 'action' => 'userrating', $biditem->user->id]) ?>">
+		<?= $biditem->has('user') ? $biditem->user->username : '' ?>
+	</a></td>
 </tr>
 <tr>
 	<th scope="row">商品名</th>
@@ -48,7 +50,9 @@
 		<th scope="col">落札日時</th>
 	</tr>
 	<tr>
-		<td><?= h($biditem->bidinfo->user->username) ?></td>
+		<td><a href="<?= $this->Url->build(['controller' => 'ratings', 'action' => 'userrating', $biditem->bidinfo->user_id]) ?>">
+			<?= h($biditem->bidinfo->user->username) ?>
+		</a></td>
 		<td><?= h($biditem->bidinfo->price) ?>円</td>
 		<td><?= h($biditem->endtime) ?></td>
 	</tr>
@@ -73,7 +77,9 @@
 	<tbody>
 	<?php foreach ($bidrequests as $bidrequest) : ?>
 	<tr>
-		<td><?= h($bidrequest->user->username) ?></td>
+	<td><a href="<?= $this->Url->build(['controller' => 'ratings', 'action' => 'userrating', $bidrequest->user->id]) ?>">
+			<?= h($bidrequest->user->username) ?>
+		</a></td>
 		<td><?= h($bidrequest->price) ?>円</td>
 		<td><?= $bidrequest->created ?></td>
 	</tr>

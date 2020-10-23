@@ -18,6 +18,11 @@
 				<td class="actions">
 					<?php if (!empty($biditem->bidinfo)) : ?>
 						<?= $this->Html->link(__('View'), ['action' => 'msg', $biditem->bidinfo->id]) ?>
+						<?php if (in_array($biditem->id, $endOfTransaction)) : ?>
+							取引終了
+						<?php else : ?>
+							<?= $this->Html->link(__('Interact'), ['action' => 'interact', $biditem->id]) ?>
+						<?php endif; ?>
 					<?php endif; ?>
 				</td>
 			</tr>
